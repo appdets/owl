@@ -46,7 +46,8 @@ class Owl {
       "error",
       "connect",
       "disconnect",
-      "reconnect_attempt",
+      "reconnect", 
+      'reconnection_attempt',
       "reconnect_error",
       "reconnect_failed",
       "ping",
@@ -78,10 +79,7 @@ class Owl {
 
   message = (callback) => {
     this.on("message", callback);
-  };
-  get = (callback) => {
-    this.on("message", callback);
-  };
+  }; 
   ready = (callback) => {
     this.on("ready", callback);
   };
@@ -97,7 +95,10 @@ class Owl {
     connect: () => {
       console.log("Connected to server");
     },
-    reconnect_attempt: () => {
+    reconnect: () => {
+      console.log("Reconnected to server");
+    },
+    reconnection_attempt: () => {
       console.log("Attempting to reconnect to server");
     },
     reconnect_error: () => {
