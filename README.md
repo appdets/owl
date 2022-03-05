@@ -167,7 +167,8 @@ $private_key = "YOUR_PRIVATE_KEY";
 
 $response = wp_remote_post('https://owl.appdets.com/api', [
     "headers" => [ 
-        "Content-Type" => "application/json",
+        "Content-Type" =>
+         "application/json",
         "Authorization" => "Bearer " . $private_key
     ],
     "body" => [
