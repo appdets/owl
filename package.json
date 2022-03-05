@@ -1,0 +1,26 @@
+{
+  "name": "owl-client",
+  "version": "1.0.0",
+  "description": "Tiny flagship realtime web push notification service based on web socket",
+  "main": "owl.js",
+  "scripts": {
+    "build": "webpack --config webpack.config.js --mode production --watch"
+  },
+  "keywords": [],
+  "author": "iamjafran",
+  "license": "MIT",
+  "devDependencies": {
+    "socket.io-client": "^4.4.1",
+    "webpack": "^5.70.0",
+    "webpack-cli": "^4.9.2"
+  },
+  "dependencies": {},
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/appdets/owl.git"
+  },
+  "bugs": {
+    "url": "https://github.com/appdets/owl/issues"
+  },
+  "homepage": "https://github.com/appdets/owl#readme"
+}
