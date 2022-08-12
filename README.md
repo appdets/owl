@@ -23,25 +23,26 @@ npm i -D owl-client
 <script src="https://owl.appdets.com/owl.js"></script>
 ```
 
-[JSDeliver]()
+[JSDeliver]() 
 ```html
-<script src="https://owl.appdets.com/owl.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/owl-client/owl.js"></script>
 ```
 
+[![](https://data.jsdelivr.com/v1/package/npm/owl-client/badge)](https://www.jsdelivr.com/package/npm/owl-client)
 
 ## Authentication
 
 `ES6`
 ```js
-// ES6
+// ES6 or module 
 import Owl from 'owl-client';
 
 // Non-module / CDN
 const Owl = window.Owl;
 
 // authenticate
-const publicKey = "YOUR_PUBLIC_KEY;" // just received messages
-const privateKey = "YOUR_PRIVATE_KEY"; // also can send messages
+const publicKey = "YOUR_PUBLIC_KEY;" // only reading messages
+const privateKey = "YOUR_PRIVATE_KEY"; // reading and sending messages
 
 const msg = new Owl(publicKey);
 ```
@@ -57,6 +58,8 @@ msg.send({
     type: "msg",
     text: "This is a JSON message"
 })
+
+// `send` method accepts string, numbers, boolean, objects, array, stream anything as argument
 ```
 
 ## Receive your first message
