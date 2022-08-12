@@ -45,6 +45,14 @@ const publicKey = "YOUR_PUBLIC_KEY;" // only reading messages
 const privateKey = "YOUR_PRIVATE_KEY"; // reading and sending messages
 
 const msg = new Owl(publicKey);
+
+// or 
+
+const msg = new Owl({
+        publicKey,
+        privateKey,
+        debug : false
+    });
 ```
 
 ## Send your first message
