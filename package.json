@@ -1,6 +1,6 @@
 {
   "name": "owl-client",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Tiny flagship realtime web push notification service based on web socket",
   "main": "owl.js",
   "scripts": {
