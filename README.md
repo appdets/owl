@@ -41,9 +41,10 @@ import Owl from 'owl-client';
 const Owl = window.Owl;
 
 // authenticate
-const publicKey = "YOUR_PUBLIC_KEY" // only reading messages
+const publicKey = "YOUR_PUBLIC_KEY"; // only reading messages
 const privateKey = "YOUR_PRIVATE_KEY"; // reading and sending messages
 
+// initialize the client
 const msg = new Owl(publicKey);
 
 // or 
