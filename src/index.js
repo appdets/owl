@@ -1,120 +1,89 @@
 import { io } from "socket.io-client";
 
 class Owl {
-  publicKey = null;
-  privateKey = null;
-  debug = false;
+  _socket = null;
+  _channel = null;
+  _callbacks = {
+      connect: null,
+      disconnect: null,
+      receive: null,
+      error: null,
+  };
 
-  constructor(data = {}) {
-    if (location.protocol !== "https:") {
-      console.error(
-        "Error: Owl works only on HTTPS, please use HTTPS protocol"
-      );
-      return;
-    }
-    if (typeof data === "string") {
-      this.publicKey = data;
-    } else {
-      this.publicKey = data.publicKey || null;
-      this.privateKey = data.privateKey || null;
-    }
-    try {
-      this.connect();
-    } catch (e) {
-      if (this.debug) {
-        console.log(e);
+  call = (callback, arg = null) => {
+      if (this._callbacks[callback]) {
+          this._callbacks[callback](arg);
       }
-    }
+  };
+
+  static init(channel = null) {
+      if (!channel || typeof channel !== "string" || channel.length < 1) {
+          throw new Error("Channel is required");
+      }
+
+      const owl = new Owl();
+      owl._channel = channel;
+
+      const socket = io("https://air.appdets.com", {
+          query: {
+              channel: channel,
+          },
+      });
+
+      const payload = (socket) => ({
+          connected: socket.connected,
+          id: socket.id,
+          channel: channel,
+          others: {
+              hostname: socket.io.opts.hostname,
+              port: socket.io.opts.port,
+              secure: socket.io.opts.secure,
+          },
+      });
+
+      socket.on("connect", () => owl.call("connect", payload(socket)));
+      socket.on("disconnect", () => owl.call("disconnect", payload(socket)));
+      socket.on("receive", (msg) => owl.call("receive", msg));
+      socket.on("error", (err) => owl.call("error", err));
+      socket.on("connect_error", (err) => owl.call("error", err));
+      socket.on("connect_timeout", (err) => owl.call("error", err));
+      socket.on("reconnect_error", (err) => owl.call("error", err));
+      socket.on("reconnect_failed", (err) => owl.call("error", err));
+      socket.on("reconnect", (err) => owl.call("error", err));
+
+      owl._socket = socket;
+      return owl;
   }
 
-  connect = () => {
-    const socket = io("//owl.appdets.com", {
-      auth: {
-        publicKey: this.publicKey,
-        privateKey: this.privateKey,
-      },
-      transports: ["polling"],
-    });
+  connect(callback) {
+      this._callbacks.connect = callback;
+  }
 
-    this.socket = socket;
-    this.registerEvents();
-  };
+  disconnect(callback) {
+      this._callbacks.disconnect = callback;
+  }
 
-  registerEvents = () => {
-    [
-      "message",
-      "error",
-      "connect",
-      "disconnect",
-      "reconnect", 
-      'reconnection_attempt',
-      "reconnect_error",
-      "reconnect_failed",
-      "ping",
-    ].forEach((event) => {
-      this.socket.on(event, (data) => {
-        try {
-          this.emit(event, data);
-        } catch (e) {}
+  receive(callback) {
+      this._callbacks.receive = callback;
+  }
 
-        try {
-          if (this.debug === true) this.events[event](data);
-        } catch (e) {}
-      });
-    });
-  };
+  error(callback) {
+      this._callbacks.error = callback;
+  }
 
-  callbacks = {};
+  send(data) {
+      this._socket.emit("send", data);
+  }
 
-  on = (eventName, handler) => {
-    if (!this.callbacks[eventName]) this.callbacks[eventName] = [];
-    this.callbacks[eventName].push(handler);
-  };
+  broadcast(data) {
+      this._socket.emit("broadcast", data);
+  }
 
-  emit = (eventName, data) => {
-    for (const callback of this.callbacks[eventName]) {
-      callback(data);
-    }
-  };
-
-  message = (callback) => {
-    this.on("message", callback);
-  }; 
-  ready = (callback) => {
-    this.on("ready", callback);
-  };
-
-  send = (data) => {
-    this.socket.emit("send", data);
-  };
-
-  events = {
-    disconnect: () => {
-      console.log("Disconnected from server");
-    },
-    connect: () => {
-      console.log("Connected to server");
-    },
-    reconnect: () => {
-      console.log("Reconnected to server");
-    },
-    reconnection_attempt: () => {
-      console.log("Attempting to reconnect to server");
-    },
-    reconnect_error: () => {
-      console.log("Reconnection error");
-    },
-    reconnect_failed: () => {
-      console.log("Reconnection failed");
-    },
-    ping: () => {
-      console.log("Ping");
-    },
-  };
-
-  debug = (debug = true) => {
-    this.debug = debug;
-  };
+  to(userId, data) {
+      this._socket.emit("to", userId, data);
+  }
 }
 
-window.Owl = Owl;
+if (typeof window !== "undefined") {
+  window.Owl = Owl;
+}
