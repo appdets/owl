@@ -23,23 +23,25 @@ npm i -D owl-client
 <script src="https://air.appdets.com/owl.js"></script>
 ```
 
-[JSDeliver]()
+[JSDeliver]() 
 ```html
-<script src="https://owl.appdets.com/owl.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/owl-client/owl.js"></script>
 ```
 
+[![](https://data.jsdelivr.com/v1/package/npm/owl-client/badge)](https://www.jsdelivr.com/package/npm/owl-client)
 
 ## Authentication
 
 `ES6`
 ```js
-// ES6
+// ES6 or module 
 import Owl from 'owl-client';
 
 // Non-module / CDN
 const Owl = window.Owl;
 
 const msg = Owl.init('yourChannelName')
+
 ```
 
 ## What is channel
@@ -57,6 +59,8 @@ msg.send({
     type: "msg",
     text: "This is a JSON message"
 })
+
+// `send` method accepts string, numbers, boolean, objects, array, stream anything as argument
 ```
 
 ### Broadcast message to everyone expect the sender
