@@ -20,7 +20,7 @@ npm i -D owl-client
 
 `Play with CDN`
 ```html
-<script src="https://owl.appdets.com/owl.js"></script>
+<script src="https://air.appdets.com/owl.js"></script>
 ```
 
 [JSDeliver]() 
@@ -40,24 +40,16 @@ import Owl from 'owl-client';
 // Non-module / CDN
 const Owl = window.Owl;
 
-// authenticate
-const publicKey = "YOUR_PUBLIC_KEY"; // only reading messages
-const privateKey = "YOUR_PRIVATE_KEY"; // reading and sending messages
+const msg = Owl.init('yourChannelName')
 
-// initialize the client
-const msg = new Owl(publicKey);
-
-// or 
-
-const msg = new Owl({
-        publicKey,
-        privateKey,
-        debug : false
-    });
 ```
+
+## What is channel
+Channel is kinda group chat or chat room. You will connect through the channel name your defined. All the data are passes through your channel.
 
 ## Send your first message
 
+## Send message to everyone in the channel
 ```js
 msg.send('Hello world');
 
@@ -71,73 +63,49 @@ msg.send({
 // `send` method accepts string, numbers, boolean, objects, array, stream anything as argument
 ```
 
+### Broadcast message to everyone expect the sender
+```js
+msg.broadcast({
+    type: "msg",
+    text: "This is a JSON message"
+})
+```
+
+### Send message to specific user
+```js
+msg.to( 
+    user, 
+    { type: "msg", text: "This is a JSON message" }
+    )
+```
+
 ## Receive your first message
 
 ```js
-msg.message((msg) => {
-    console.log(msg)
-    // Hello world
-});
-
-//or 
-
-msg.on("message", (msg) => {
-    console.log(msg)
-    // Hello world
+msg.receive((msg) => {
+    console.log('Just received', msg)
 });
 ```
 
 ## Other events 
 ```js
-msg.ready((data) => {
-    // Owl is ready to send or receive data
+msg.connect((data) => {
+    // Owl is connected
 });
 ```
 
-## Mainstream socket methods
 
-Owl supports mainstream socket events like
-
-```js
-msg.on("connect", () => {
-    // Owl connected
-});
-```
-
-**List of the events** 
+**List of all events** 
  
 
 `connect`
-
-`connect_error`
 
 `disconnect`
 
 `error`
 
-`ping`
+`receive`
 
-`reconnect`
-
-`reconnection_attempt`
-
-`reconnect_error`
-
-`reconnect_failed`
-
-
-
-# Debug
-
-You can turn on debugging mode by using this method
-```js
-// turn on debugging mode
-msg.debug();
-
-// or 
-
-msg.debug(false); // will stop debugging
-```
 
 # Send message using REST API
 
@@ -145,45 +113,41 @@ You can also send message using REST API following the method bellow
 
 `Using CURL` 
 ```bash
-curl https://owl.appdets.com/api -a 
+curl https://air.appdets.com/send -a 
    -H "Accept: application/json"
-   -H "Authorization: Bearer {YOUR_PRIVATE_KEY}"
-   -d "{\"message\": \"hello world\"}" 
+   -d "{\"channel\": \"yourChannelName\", \"message\": \"hello world\"}" 
 ```
 
 `Using JavaScript` 
 ```js
 (async function(){
-    const privateKey = "YOUR_PRIVATE_KEY"
-    const req = await fetch('https://owl.appdets.com/api', {
+    const req = await fetch('https://air.appdets.com/send', {
         method: "POST",
         headers: {
             "Content-Type": "application/json",
-            Authorization: "Bearer " + privateKey
         },
-        body: JSON.stringify({  message: "Hello world" })
+        body: JSON.stringify({ channel: "yourChannelName",  message: "Hello world" })
     }) 
 
     const res = await req.json()
     console.log(res)
     // {
     // 	"success": true,
-    // 	"message": "Message sent"
     // }
 })()
 ```
 
 `Using WordPress` 
 ```php
-$private_key = "YOUR_PRIVATE_KEY";
 
-$response = wp_remote_post('https://owl.appdets.com/api', [
+$response = wp_remote_post('https://air.appdets.com/send', [
     "headers" => [ 
         "Content-Type" =>
-         "application/json",
-        "Authorization" => "Bearer " . $private_key
+        
+        "application/json",
     ],
     "body" => [
+        "channel" => "yourChannelName",
         "message" => "hello world"
     ]
 ]); 
@@ -195,8 +159,8 @@ $responseBody = json_decode(wp_remote_retrieve_body( $response ));
 
 -----
 
-# Get your Keys!
-This is on beta mode, so you have to apply for keys before you start. 
+# Early Bird Access!
+This is on beta mode, so you have to apply for access before you start. 
 
 Please send a request mail to `jafrandev@gmail.com` with your proper explanation, like what and why you would like to use Owl for your purpose? 
 
