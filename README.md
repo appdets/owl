@@ -20,14 +20,8 @@ npm i -D owl-client
 
 `Play with CDN`
 ```html
-<script src="https://air.appdets.com/owl.js"></script>
+<script src="//unpkg.com/owl-client" async></script>
 ```
-
-[JSDeliver]()
-```html
-<script src="https://owl.appdets.com/owl.js"></script>
-```
-
 
 ## Authentication
 
