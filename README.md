@@ -53,7 +53,7 @@ msg.send({
 })
 ```
 
-### Broadcast message to everyone expect the sender
+### Broadcast message to everyone except the sender
 ```js
 msg.broadcast({
     type: "msg",

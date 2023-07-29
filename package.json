@@ -1,8 +1,8 @@
 {
   "name": "owl-client",
-  "version": "0.0.1",
-  "description": "Tiny flagship real time web push notification / message service based on WebSocket. It works on cross browser, cross platform and cross environment. So, waiting for?",
-  "main": "./src/owl.js",
+  "version": "0.0.2",
+  "description": "Revolutionizing real-time web push notifications with its compact yet robust WebSocket-based system, ensuring cross-browser, cross-platform, and cross-environment compatibility for instant and engaging communication. 🦉🚀",
+  "main": "./dist/owl.js",
   "scripts": {
     "build": "npx webpack --config webpack.config.js --mode production"
   },
@@ -18,8 +18,7 @@
   },
   "homepage": "https://github.com/appdets/owl#readme",
   "devDependencies": {
-    "webpack": "^5.88.2",
-    "webpack-cli": "^5.1.4"
+    "vite": "^4.4.7"
   },
   "dependencies": {
     "socket.io-client": "^4.7.1"
