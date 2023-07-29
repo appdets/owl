@@ -5,6 +5,6 @@ module.exports = {
   mode: "production",
   output: {
     filename: "owl.js",
-    path: path.resolve(__dirname, "./"),
+    path: path.resolve(__dirname, "./public/"),
   },
 };
